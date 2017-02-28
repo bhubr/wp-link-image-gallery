@@ -7,7 +7,8 @@ class WP_Link_Image_Gallery {
 	 */
 	public function __construct() {
 		add_action( 'add_meta_boxes', [$this, 'register_link_editor_meta_box'] );
-		add_action( 'admin_enqueue_scripts', [$this, 'enqueue_link_editor_script']);
+		add_action( 'admin_enqueue_scripts', [$this, 'enqueue_link_editor_script'] );
+		add_shortcode( 'link_gallery', [$this, 'do_gallery_shortcode'] );
 	}
 
 	/**
@@ -27,12 +28,36 @@ class WP_Link_Image_Gallery {
 	}
 
 	/**
+	 * Display link gallery
+	 */
+	function do_gallery_shortcode($args) {
+		$links = get_bookmarks(); ?>
+		<div class="pure-g">
+		<?php foreach($links as $link) { 
+			$image_url = parse_url($link->link_image, PHP_URL_PATH);
+			$url_bits = explode(".", $image_url);
+			$arr_len = count($url_bits);
+			$last_idx = $arr_len - 1;
+			$ext = $url_bits[$arr_len - 1];
+			$image_url = str_replace(".$ext", "-630x300.$ext", $image_url);
+			?>
+			<div class="pure-u-1 pure-u-md-1-2">
+			  <div class="link-card">
+				<img src="<?php echo $image_url; ?>" alt="<?php echo $link->link_name; ?>" class="alignleft" />
+				<h4><?php echo $link->link_name; ?></h4>
+				<p><?php echo $link->link_description; ?></p>
+				<a href="<?php echo $link->link_url; ?>" target="<?php echo $link->link_target; ?>"><?php _e('Visit site'); ?></a>
+			  </div>
+			</div>
+		<?php } ?>
+		</div>
+		<?php
+	}
+
+	/**
 	 * Show featured image meta box
 	 */
 	function link_featured_image_box($link, $register_info) {
-		// Get WordPress' media upload URL
-		// $upload_link = esc_url( get_upload_iframe_src( 'link', $link->link_id ) );
-
 		// Get the image src
 		$you_have_img = ! empty($link->link_image);
 		// For convenience, see if the array is valid
@@ -58,8 +83,6 @@ class WP_Link_Image_Gallery {
 		    </a>
 		</p>
 
-		<!-- A hidden input to set and post the chosen image id -->
-		<input class="custom-img-id" name="custom-img-id" type="hidden" value="<?php echo esc_attr( $your_img_id ); ?>" />
 		<?php
 	}
 }
