@@ -9,7 +9,7 @@ class WP_Link_Image_Gallery {
 		add_action( 'add_meta_boxes', [$this, 'register_link_editor_meta_box'] );
 		add_action( 'admin_enqueue_scripts', [$this, 'enqueue_link_editor_script'] );
 		add_shortcode( 'link_gallery', [$this, 'do_gallery_shortcode'] );
-		add_action( 'wp_enqueue_scripts', [$this, 'front_enqueue_styles'] );
+		add_action( 'wp_enqueue_scripts', [$this, 'front_enqueue_assets'] );
 	}
 
 	/**
@@ -49,7 +49,7 @@ class WP_Link_Image_Gallery {
 		<?php
 		foreach($link_cats as $cat) {
 			$links = get_bookmarks(['category' => "$cat->term_id"]); ?>
-			<div class="pure-g">
+			<div id="<?php echo $cat->slug; ?>" class="pure-g">
 				<div class="pure-u-1">
 					<h3><?php echo $cat->name; ?></h3>
 				</div>
@@ -63,7 +63,7 @@ class WP_Link_Image_Gallery {
 				$image_url = str_replace(".$ext", "-300x188.$ext", $image_url);
 				$name_split = explode(' - ', $link->link_name);
 				?>
-				<div id="<?php echo $cat->slug; ?>" class="pure-u-1 pure-u-md-1-4 pure-u-sm-2">
+				<div class="pure-u-1 pure-u-md-1-4 pure-u-sm-2">
 					<div class="link-card">
 						<a href="<?php echo $link->link_url; ?>" target="<?php echo $link->link_target; ?>">
 							<div class="img-container">
@@ -82,8 +82,9 @@ class WP_Link_Image_Gallery {
 		}
 	}
 
-	function front_enqueue_styles() {
+	function front_enqueue_assets() {
 		wp_enqueue_style('link-gallery', plugins_url('link-image-gallery.css', __FILE__));
+		wp_enqueue_script('link-gallery-js', plugins_url('link-image-gallery.js', __FILE__), array('all'));
 	}
 
 	/**

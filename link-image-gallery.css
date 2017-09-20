@@ -1,7 +1,8 @@
 .link-card {
   /*border: 1px solid red;*/
+  position: relative;
   background: #f8f8f8;
-  box-shadow: 3px 3px 2px #ccc;
+  /*padding-bottom: 32px;*/
   margin-bottom: 32px;
 }
 
@@ -10,16 +11,27 @@
   border: none !important;
   border-radius: 0 !important;
   background: #f8f8f8 !important;
+  margin: 0 !important;
 }
 
 .link-card p {
-  padding: 10px;
+  background: #f8f8f8;
+  z-index: 10;
+  box-shadow: 3px 3px 2px #ccc;
+  position: absolute;
+  padding: 4px 10px 15px 10px;
   margin: 0 0;
+  max-height: 10px;
+  overflow: hidden;
+  transition: max-height 0.6s;
+  /*transition: padding 0.2s;*/
 }
-
+.link-card p.expanded {
+  max-height: 500px;
+}
 .link-card .img-container {
-  position: relative;
-  /*border: 1px solid yellow;*/
+  z-index: 1;
+  box-shadow: 3px 3px 2px #ccc;
 }
 
 .link-card .img-container .overlay {
