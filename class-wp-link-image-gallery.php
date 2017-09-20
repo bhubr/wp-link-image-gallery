@@ -9,20 +9,20 @@ class WP_Link_Image_Gallery {
 		add_action( 'add_meta_boxes', [$this, 'register_link_editor_meta_box'] );
 		add_action( 'admin_enqueue_scripts', [$this, 'enqueue_link_editor_script'] );
 		add_shortcode( 'link_gallery', [$this, 'do_gallery_shortcode'] );
+		add_action( 'wp_enqueue_scripts', [$this, 'front_enqueue_styles'] );
 	}
 
 	/**
 	 * Register link featured image meta box
 	 */
 	function register_link_editor_meta_box() {
-	    add_meta_box( 'link-featured-image-box', __( 'Link Featured Image', 'textdomain' ), [$this, 'link_featured_image_box'], 'link', 'side' );
+		add_meta_box( 'link-featured-image-box', __( 'Link Featured Image', 'textdomain' ), [$this, 'link_featured_image_box'], 'link', 'side' );
 	}
 
 	/**
 	 * Add JS code to meta box
 	 */
 	function enqueue_link_editor_script($hook) {
-		var_dump($hook);
 		wp_enqueue_media();
 		wp_enqueue_script('link-featured-image', plugins_url('link-featured-image.js', __FILE__)); //, ['media-views', 'media-models']);
 	}
@@ -39,19 +39,29 @@ class WP_Link_Image_Gallery {
 			$arr_len = count($url_bits);
 			$last_idx = $arr_len - 1;
 			$ext = $url_bits[$arr_len - 1];
-			$image_url = str_replace(".$ext", "-630x300.$ext", $image_url);
+			$image_url = str_replace(".$ext", "-300x188.$ext", $image_url);
+			$name_split = explode(' - ', $link->link_name);
 			?>
-			<div class="pure-u-1 pure-u-md-1-2">
-			  <div class="link-card">
-				<img src="<?php echo $image_url; ?>" alt="<?php echo $link->link_name; ?>" class="alignleft" />
-				<h4><?php echo $link->link_name; ?></h4>
-				<p><?php echo $link->link_description; ?></p>
-				<a href="<?php echo $link->link_url; ?>" target="<?php echo $link->link_target; ?>"><?php _e('Visit site'); ?></a>
-			  </div>
+			<div class="pure-u-1 pure-u-md-1-3 pure-u-sm-2">
+				<div class="link-card">
+					<a href="<?php echo $link->link_url; ?>" target="<?php echo $link->link_target; ?>">
+						<div class="img-container">
+							<img src="<?php echo $image_url; ?>" alt="<?php echo $link->link_name; ?>" />
+							<div class="overlay"><?php foreach($name_split as $part): ?>
+								<span class="overlay-line"><?php echo $part; ?></span><br>
+							<?php endforeach; ?></div>
+						</div>
+					</a>
+					<p><?php echo $link->link_description; ?></p>
+				</div>
 			</div>
 		<?php } ?>
 		</div>
 		<?php
+	}
+
+	function front_enqueue_styles() {
+		wp_enqueue_style('link-gallery', plugins_url('link-image-gallery.css', __FILE__));
 	}
 
 	/**
@@ -66,21 +76,21 @@ class WP_Link_Image_Gallery {
 
 		<!-- Your image container, which can be manipulated with js -->
 		<div class="custom-img-container">
-		    <?php if ( $you_have_img ) : ?>
-		        <img  src="<?php echo $link->link_image; ?>" alt="" style="max-width:100%;" /><br>
-		    <?php endif; ?>
+			<?php if ( $you_have_img ) : ?>
+				<img  src="<?php echo $link->link_image; ?>" alt="" style="max-width:100%;" /><br>
+			<?php endif; ?>
 		</div>
 
 		<!-- Your add & remove image links -->
 		<p class="hide-if-no-js">
-		    <a class="upload-custom-img <?php if ( $you_have_img  ) { echo 'hidden'; } ?>" 
-		       href="<?php echo $upload_link ?>">
-		        <?php _e('Set featured image') ?>
-		    </a>
-		    <a class="delete-custom-img <?php if ( ! $you_have_img  ) { echo 'hidden'; } ?>" 
-		      href="#">
-		        <?php _e('Remove this image') ?>
-		    </a>
+			<a class="upload-custom-img <?php if ( $you_have_img  ) { echo 'hidden'; } ?>"
+			   href="<?php echo $upload_link ?>">
+				<?php _e('Set featured image') ?>
+			</a>
+			<a class="delete-custom-img <?php if ( ! $you_have_img  ) { echo 'hidden'; } ?>"
+			  href="#">
+				<?php _e('Remove this image') ?>
+			</a>
 		</p>
 
 		<?php

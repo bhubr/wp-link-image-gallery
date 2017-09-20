@@ -1,0 +1,27 @@
+.link-card {
+  /*border: 1px solid red;*/
+  background: #f8f8f8;
+  box-shadow: 3px 3px 2px #ccc;
+}
+
+.link-card .img-container {
+  position: relative;
+  /*border: 1px solid yellow;*/
+}
+
+.link-card .img-container .overlay {
+  position: absolute;
+  left: 0;
+  top: 140px;
+}
+
+.link-card .img-container .overlay-line {
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  padding: 0 4px;
+}
+
+.link-card img {
+  max-width: 100%;
+  /*margin-left: -2px;*/
+}

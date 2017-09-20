@@ -1,7 +1,7 @@
 <?php
 /*
  Plugin Name: Link Featured Image and Gallery
- Version: 0.1.2
+ Version: 0.2.0
  Author: Benoît Hubert <benoithubert@gmail.com>
  */
 
