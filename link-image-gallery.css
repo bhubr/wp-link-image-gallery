@@ -2,6 +2,19 @@
   /*border: 1px solid red;*/
   background: #f8f8f8;
   box-shadow: 3px 3px 2px #ccc;
+  margin-bottom: 32px;
+}
+
+.link-card a {
+  padding: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  background: #f8f8f8 !important;
+}
+
+.link-card p {
+  padding: 10px;
+  margin: 0 0;
 }
 
 .link-card .img-container {
@@ -12,7 +25,8 @@
 .link-card .img-container .overlay {
   position: absolute;
   left: 0;
-  top: 140px;
+  top: 90px;
+  font-size: 14px;
 }
 
 .link-card .img-container .overlay-line {
@@ -22,6 +36,6 @@
 }
 
 .link-card img {
-  max-width: 100%;
+  width: 100% !important;
   /*margin-left: -2px;*/
 }
