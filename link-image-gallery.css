@@ -14,7 +14,7 @@
   margin: 0 !important;
 }
 
-.link-card p {
+.link-card .link-description {
   background: #f8f8f8;
   z-index: 10;
   box-shadow: 3px 3px 2px #ccc;
@@ -26,7 +26,23 @@
   transition: max-height 0.6s;
   /*transition: padding 0.2s;*/
 }
-.link-card p.expanded {
+.link-card .link-description p {
+  margin: 0;
+  width: 97%;
+}
+.link-card .link-description span {
+  font-weight: bold;
+  position: absolute;
+  right: 5px;
+  bottom: 3px;
+}
+.link-card .link-description span:after {
+  content: "+";
+}
+.link-card .link-description.expanded span:after {
+  content: "-";
+}
+.link-card .link-description.expanded {
   max-height: 500px;
 }
 .link-card .img-container {

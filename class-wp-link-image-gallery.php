@@ -73,7 +73,7 @@ class WP_Link_Image_Gallery {
 								<?php endforeach; ?></div>
 							</div>
 						</a>
-						<p><?php echo $link->link_description; ?></p>
+						<div class="link-description"><p><?php echo $link->link_description; ?></p><span></span></div>
 					</div>
 				</div>
 			<?php } ?>

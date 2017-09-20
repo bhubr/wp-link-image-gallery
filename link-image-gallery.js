@@ -1,13 +1,17 @@
 (function($) {
-  console.log('ok');
 	$(document).ready(function() {
-    var cardTexts = $('.link-card p');
-    console.log(cardTexts);
-    cardTexts.bind('mouseover', function(evt) {
-      $(evt.target).addClass('expanded'); //css('max-height', 'auto');
+    var cardTexts = $('.link-card .link-description p');
+    var cardBtns = $('.link-card .link-description span');
+    console.log(cardTexts, cardBtns);
+    cardTexts.bind('mouseover touchstart', function(evt) {
+      $(evt.target).parent().addClass('expanded');
     });
-    cardTexts.bind('mouseleave', function(evt) {
-      $(evt.target).removeClass('expanded'); //css('max-height', 'auto');
+    cardTexts.bind('mouseleave touchend', function(evt) {
+      $(evt.target).parent().removeClass('expanded');
+    });
+    cardBtns.bind('click touchstart', function(evt) {
+      console.log($(evt.target).parent());
+      $(evt.target).parent().toggleClass('expanded');
     });
   });
-})(Zepto);
+})('undefined' !== typeof jQuery ? jQuery : Zepto);
